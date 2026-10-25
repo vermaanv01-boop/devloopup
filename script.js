@@ -4,6 +4,33 @@
 const searchForm = document.getElementById('searchForm');
 const usernameInput = document.getElementById('usernameInput');
 
+// GSAP
+if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
+let currentScrollTriggers = [];
+let prefersReducedMotion = false;
+
+// Check prefers-reduced-motion
+if (typeof window !== 'undefined') {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    prefersReducedMotion = mediaQuery.matches;
+    mediaQuery.addEventListener('change', (e) => {
+        prefersReducedMotion = e.matches;
+    });
+}
+
+// Clear all ScrollTriggers
+function clearScrollTriggers() {
+    currentScrollTriggers.forEach((trigger) => {
+        if (trigger && typeof trigger.kill === 'function') {
+            trigger.kill();
+        }
+    });
+    currentScrollTriggers = [];
+}
+
 // Status elements
 const loadingIndicator = document.getElementById('loadingIndicator');
 const notFoundMessage = document.getElementById('notFoundMessage');
