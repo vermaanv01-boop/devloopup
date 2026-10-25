@@ -95,6 +95,7 @@ function showError() {
 function hideProfileAndRepos() {
     profileSection.classList.remove('active');
     reposSection.classList.remove('active');
+    clearScrollTriggers();
 }
 
 // Format number with commas
