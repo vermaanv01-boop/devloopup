@@ -144,6 +144,32 @@ async function fetchUserRepos(username) {
     }
 }
 
+// Animate profile section and stats
+function animateProfile() {
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+        return;
+    }
+    
+    gsap.set(profileSection, { opacity: 0, y: 24 });
+    gsap.to(profileSection, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out'
+    });
+    
+    const statItems = profileSection.querySelectorAll('.stat-item');
+    gsap.set(statItems, { opacity: 0, y: 12 });
+    gsap.to(statItems, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+        stagger: 0.08,
+        delay: 0.2
+    });
+}
+
 // Display user profile
 function displayProfile(userData) {
     // Avatar
@@ -197,6 +223,7 @@ function displayProfile(userData) {
     
     // Show profile section
     profileSection.classList.add('active');
+    animateProfile();
 }
 
 // Display repositories
