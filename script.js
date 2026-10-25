@@ -226,6 +226,28 @@ function displayProfile(userData) {
     animateProfile();
 }
 
+// Animate repositories
+function animateRepos() {
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+        return;
+    }
+    
+    const repoCards = reposList.querySelectorAll('.repo-card');
+    if (repoCards.length === 0) {
+        return;
+    }
+    
+    gsap.set(repoCards, { opacity: 0, y: 16 });
+    gsap.to(repoCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+        stagger: 0.06,
+        delay: 0.15
+    });
+}
+
 // Display repositories
 function displayRepos(repos) {
     reposList.innerHTML = '';
@@ -233,6 +255,15 @@ function displayRepos(repos) {
     if (!repos || repos.length === 0) {
         noReposMessage.classList.add('active');
         reposSection.classList.add('active');
+        if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+            gsap.set(reposSection, { opacity: 0, y: 20 });
+            gsap.to(reposSection, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: 'power2.out'
+            });
+        }
         return;
     }
     
@@ -336,6 +367,17 @@ function displayRepos(repos) {
     });
     
     reposSection.classList.add('active');
+    
+    if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+        gsap.set(reposSection, { opacity: 0, y: 20 });
+        gsap.to(reposSection, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out'
+        });
+        animateRepos();
+    }
 }
 
 // Handle form submission
