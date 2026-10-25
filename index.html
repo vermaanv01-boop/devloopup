@@ -51,43 +51,49 @@
 
             <section id="profileSection" class="profile-section" aria-label="Profile information" aria-live="polite">
                 <article class="profile-card">
-                    <div class="profile-header">
-                        <img id="avatar" src="" alt="User avatar" class="avatar">
-                        <div class="profile-basic">
-                            <h2 id="name" class="profile-name"></h2>
-                            <a id="username" href="#" target="_blank" rel="noopener noreferrer" class="profile-username"></a>
+                    <div class="profile-layout">
+                        <div class="profile-aside">
+                            <img id="avatar" src="" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="profile-main">
+                            <header class="profile-main-header">
+                                <h2 id="name" class="profile-name"></h2>
+                                <a id="username" href="#" target="_blank" rel="noopener noreferrer" class="profile-username"></a>
+                            </header>
                             <p id="bio" class="profile-bio"></p>
-                        </div>
-                    </div>
-                    <div class="profile-details">
-                        <div class="detail-item" id="locationItem">
-                            <span class="detail-label">Location</span>
-                            <span id="location" class="detail-value"></span>
-                        </div>
-                        <div class="detail-item" id="companyItem">
-                            <span class="detail-label">Company</span>
-                            <span id="company" class="detail-value"></span>
-                        </div>
-                    </div>
-                    <div class="profile-stats">
-                        <div class="stat-item">
-                            <span id="followers" class="stat-value">0</span>
-                            <span class="stat-label">Followers</span>
-                        </div>
-                        <div class="stat-item">
-                            <span id="following" class="stat-value">0</span>
-                            <span class="stat-label">Following</span>
-                        </div>
-                        <div class="stat-item">
-                            <span id="publicRepos" class="stat-value">0</span>
-                            <span class="stat-label">Public Repos</span>
+                            <div class="profile-meta">
+                                <div class="meta-row" id="locationItem">
+                                    <span class="meta-label">Location</span>
+                                    <span id="location" class="meta-value"></span>
+                                </div>
+                                <div class="meta-row" id="companyItem">
+                                    <span class="meta-label">Company</span>
+                                    <span id="company" class="meta-value"></span>
+                                </div>
+                            </div>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span id="followers" class="stat-value">0</span>
+                                    <span class="stat-label">Followers</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span id="following" class="stat-value">0</span>
+                                    <span class="stat-label">Following</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span id="publicRepos" class="stat-value">0</span>
+                                    <span class="stat-label">Public Repos</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </article>
             </section>
 
             <section id="reposSection" class="repos-section" aria-label="Recent repositories" aria-live="polite">
-                <h2 class="section-title">Recent Repositories</h2>
+                <header class="repos-header">
+                    <h2 class="section-title">Recent Repositories</h2>
+                </header>
                 <div id="reposList" class="repos-list" role="list"></div>
                 <p id="noReposMessage" class="no-repos" aria-live="polite">No public repositories found.</p>
             </section>
@@ -96,7 +102,9 @@
 
     <footer class="footer">
         <div class="container">
-            <p class="footer-text">Built with vanilla HTML, CSS & JavaScript • Powered by GitHub REST API</p>
+            <div class="footer-inner">
+                <p class="footer-text">Built with vanilla HTML, CSS & JavaScript • Powered by GitHub REST API</p>
+            </div>
         </div>
     </footer>
 
