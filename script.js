@@ -450,15 +450,77 @@ searchForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Allow Enter key in input (form submission handles it)
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        // Form submission will handle it
+// Initialize animations for hero
+function initHeroAnimations() {
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+        return;
     }
-});
+    
+    const headerInner = document.querySelector('.header-inner');
+    const searchSection = document.querySelector('.search-section');
+    
+    if (headerInner) {
+        gsap.set(headerInner.querySelector('.logo'), { opacity: 0, y: 20 });
+        gsap.set(headerInner.querySelector('.tagline'), { opacity: 0, y: 16 });
+        gsap.to(headerInner.querySelector('.logo'), {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out'
+        });
+        gsap.to(headerInner.querySelector('.tagline'), {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            delay: 0.12
+        });
+    }
+    
+    if (searchSection) {
+        gsap.set(searchSection, { opacity: 0, y: 20 });
+        gsap.to(searchSection, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            delay: 0.24
+        });
+    }
+}
 
-// Initialize - ensure all sections are hidden
+// Add hover animations
+function initHoverAnimations() {
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+        return;
+    }
+    
+    const searchButton = document.querySelector('.search-button');
+    if (searchButton) {
+        searchButton.addEventListener('mouseenter', () => {
+            gsap.to(searchButton, {
+                scale: 1.02,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        });
+        searchButton.addEventListener('mouseleave', () => {
+            gsap.to(searchButton, {
+                scale: 1,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        });
+    }
+}
+
+// Initialize - ensure all sections are hidden and run animations
 document.addEventListener('DOMContentLoaded', () => {
     hideAllStatus();
     hideProfileAndRepos();
+    reposList.innerHTML = '';
+    noReposMessage.classList.remove('active');
+    
+    initHeroAnimations();
+    initHoverAnimations();
 });
