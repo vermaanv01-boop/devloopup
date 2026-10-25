@@ -37,7 +37,7 @@ const notFoundMessage = document.getElementById('notFoundMessage');
 const errorMessage = document.getElementById('errorMessage');
 
 // Profile elements
-const profileSection = document.getElementById('profileSection');
+const profileStage = document.getElementById('profileStage');
 const avatar = document.getElementById('avatar');
 const nameEl = document.getElementById('name');
 const usernameEl = document.getElementById('username');
@@ -51,7 +51,7 @@ const followingEl = document.getElementById('following');
 const publicReposEl = document.getElementById('publicRepos');
 
 // Repos elements
-const reposSection = document.getElementById('reposSection');
+const reposStage = document.getElementById('reposStage');
 const reposList = document.getElementById('reposList');
 const noReposMessage = document.getElementById('noReposMessage');
 
@@ -93,8 +93,12 @@ function showError() {
 
 // Hide profile and repos sections
 function hideProfileAndRepos() {
-    profileSection.classList.remove('active');
-    reposSection.classList.remove('active');
+    if (profileStage) {
+        profileStage.classList.remove('active');
+    }
+    if (reposStage) {
+        reposStage.classList.remove('active');
+    }
     clearScrollTriggers();
 }
 
@@ -144,29 +148,29 @@ async function fetchUserRepos(username) {
     }
 }
 
-// Animate profile section and stats
+// Animate profile section
 function animateProfile() {
-    if (prefersReducedMotion || typeof gsap === 'undefined') {
+    if (prefersReducedMotion || typeof gsap === 'undefined' || !profileStage) {
         return;
     }
     
-    gsap.set(profileSection, { opacity: 0, y: 24 });
-    gsap.to(profileSection, {
+    gsap.set(profileStage, { opacity: 0, y: 30 });
+    gsap.to(profileStage, {
         opacity: 1,
         y: 0,
-        duration: 0.7,
-        ease: 'power2.out'
+        duration: 0.8,
+        ease: 'power3.out'
     });
     
-    const statItems = profileSection.querySelectorAll('.stat-item');
-    gsap.set(statItems, { opacity: 0, y: 12 });
-    gsap.to(statItems, {
+    const statBlocks = profileStage.querySelectorAll('.stat-block');
+    gsap.set(statBlocks, { opacity: 0, y: 16 });
+    gsap.to(statBlocks, {
         opacity: 1,
         y: 0,
-        duration: 0.5,
+        duration: 0.6,
         ease: 'power2.out',
-        stagger: 0.08,
-        delay: 0.2
+        stagger: 0.1,
+        delay: 0.25
     });
 }
 
@@ -222,7 +226,9 @@ function displayProfile(userData) {
     publicReposEl.textContent = formatNumber(userData.public_repos || 0);
     
     // Show profile section
-    profileSection.classList.add('active');
+    if (profileStage) {
+        profileStage.classList.add('active');
+    }
     animateProfile();
 }
 
