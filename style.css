@@ -71,12 +71,14 @@ body {
     letter-spacing: -0.02em;
     line-height: 1.1;
     color: var(--text-primary);
+    will-change: transform, opacity;
 }
 
 .tagline {
     color: var(--text-secondary);
     font-size: 1rem;
     font-weight: 400;
+    will-change: transform, opacity;
 }
 
 /* Main */
@@ -89,6 +91,7 @@ body {
 .search-section {
     margin-bottom: 3rem;
     max-width: 720px;
+    will-change: transform, opacity;
 }
 
 .search-form {
@@ -136,6 +139,7 @@ body {
     text-transform: uppercase;
     font-size: 0.8rem;
     letter-spacing: 0.08em;
+    will-change: transform;
 }
 
 .search-button:hover {
@@ -210,6 +214,7 @@ body {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     padding: 2.5rem;
+    will-change: transform, opacity;
 }
 
 .profile-layout {
@@ -369,6 +374,7 @@ body {
     color: inherit;
     transition: padding-left 0.2s ease, color 0.2s ease;
     display: block;
+    will-change: transform;
 }
 
 .repo-card:first-child {
