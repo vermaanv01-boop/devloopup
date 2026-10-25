@@ -234,24 +234,9 @@ function displayProfile(userData) {
 
 // Animate repositories
 function animateRepos() {
-    if (prefersReducedMotion || typeof gsap === 'undefined') {
-        return;
+    if (prefersReducedMotion || typeof gsap !== 'undefined') {
+        // handled below
     }
-    
-    const repoCards = reposList.querySelectorAll('.repo-card');
-    if (repoCards.length === 0) {
-        return;
-    }
-    
-    gsap.set(repoCards, { opacity: 0, y: 16 });
-    gsap.to(repoCards, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        stagger: 0.06,
-        delay: 0.15
-    });
 }
 
 // Display repositories
@@ -259,52 +244,55 @@ function displayRepos(repos) {
     reposList.innerHTML = '';
     
     if (!repos || repos.length === 0) {
-        noReposMessage.classList.add('active');
-        reposSection.classList.add('active');
-        if (!prefersReducedMotion && typeof gsap !== 'undefined') {
-            gsap.set(reposSection, { opacity: 0, y: 20 });
-            gsap.to(reposSection, {
+        if (noReposMessage) {
+            noReposMessage.classList.add('active');
+        }
+        if (reposStage) {
+            reposStage.classList.add('active');
+        }
+        if (!prefersReducedMotion && typeof gsap !== 'undefined' && reposStage) {
+            gsap.set(reposStage, { opacity: 0, y: 30 });
+            gsap.to(reposStage, {
                 opacity: 1,
                 y: 0,
-                duration: 0.6,
-                ease: 'power2.out'
+                duration: 0.8,
+                ease: 'power3.out'
             });
         }
         return;
     }
     
-    noReposMessage.classList.remove('active');
+    if (noReposMessage) {
+        noReposMessage.classList.remove('active');
+    }
     
-    repos.forEach(repo => {
-        const repoCard = document.createElement('a');
-        repoCard.href = repo.html_url;
-        repoCard.target = '_blank';
-        repoCard.rel = 'noopener noreferrer';
-        repoCard.className = 'repo-card';
-        repoCard.setAttribute('role', 'listitem');
-        repoCard.setAttribute('aria-label', `Repository ${repo.name}`);
+    repos.forEach((repo, index) => {
+        const repoItem = document.createElement('a');
+        repoItem.href = repo.html_url;
+        repoItem.target = '_blank';
+        repoItem.rel = 'noopener noreferrer';
+        repoItem.className = 'repo-item';
+        repoItem.setAttribute('role', 'listitem');
+        repoItem.setAttribute('aria-label', `Repository ${repo.name}`);
         
-        const repoHeader = document.createElement('div');
-        repoHeader.className = 'repo-header';
+        const repoNumber = document.createElement('span');
+        repoNumber.className = 'repo-number';
+        repoNumber.textContent = String(index + 1).padStart(2, '0');
+        
+        const repoMain = document.createElement('div');
+        repoMain.className = 'repo-main';
+        
+        const repoTop = document.createElement('div');
+        repoTop.className = 'repo-top';
         
         const repoName = document.createElement('div');
         repoName.className = 'repo-name';
         repoName.textContent = repo.name;
         
-        repoHeader.appendChild(repoName);
+        repoTop.appendChild(repoName);
         
-        const repoDescription = document.createElement('p');
-        repoDescription.className = 'repo-description';
-        if (repo.description) {
-            repoDescription.textContent = repo.description;
-        } else {
-            repoDescription.textContent = 'No description provided.';
-            repoDescription.style.fontStyle = 'italic';
-            repoDescription.style.color = 'var(--text-secondary)';
-        }
-        
-        const repoMeta = document.createElement('div');
-        repoMeta.className = 'repo-meta';
+        const repoMetaLine = document.createElement('div');
+        repoMetaLine.className = 'repo-meta-line';
         
         // Language
         if (repo.language) {
@@ -313,76 +301,86 @@ function displayRepos(repos) {
             
             const langDot = document.createElement('span');
             langDot.className = 'language-dot';
-            // Simple color mapping for common languages
             const langColors = {
-                'JavaScript': '#f1e05a',
-                'TypeScript': '#3178c6',
-                'Python': '#3572A5',
-                'Java': '#b07219',
-                'C++': '#f34b7d',
-                'C': '#555555',
-                'Go': '#00ADD8',
-                'Rust': '#dea584',
-                'PHP': '#4F5D95',
-                'Ruby': '#701516',
-                'Swift': '#ffac45',
-                'Kotlin': '#A97BFF',
-                'HTML': '#e34c26',
-                'CSS': '#563d7c',
-                'Shell': '#89e051',
-                'Vue': '#41b883',
-                'React': '#61dafb'
+                'JavaScript': '#B5A642',
+                'TypeScript': '#4A6FB5',
+                'Python': '#3C6B9B',
+                'Java': '#8C6B3A',
+                'C++': '#9C4D6B',
+                'C': '#6B6B6B',
+                'Go': '#5A9B9B',
+                'Rust': '#B57A5A',
+                'PHP': '#6B6B9B',
+                'Ruby': '#8B4A4A',
+                'Swift': '#B57A3A',
+                'Kotlin': '#7A6B9B',
+                'HTML': '#9B5A4A',
+                'CSS': '#6B5A9B',
+                'Shell': '#6B9B6B',
+                'Vue': '#5A9B7A',
+                'React': '#5A9BB5'
             };
-            langDot.style.background = langColors[repo.language] || '#8b949e';
+            langDot.style.background = langColors[repo.language] || '#8B8B8B';
             
             const langText = document.createElement('span');
             langText.textContent = repo.language;
             
             langItem.appendChild(langDot);
             langItem.appendChild(langText);
-            repoMeta.appendChild(langItem);
+            repoMetaLine.appendChild(langItem);
         }
         
         // Stars
         const starsItem = document.createElement('div');
         starsItem.className = 'repo-meta-item';
-        starsItem.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"/>
-            </svg>
-            <span>${formatNumber(repo.stargazers_count || 0)}</span>
-        `;
-        repoMeta.appendChild(starsItem);
+        starsItem.innerHTML = `<span>★</span><span>${formatNumber(repo.stargazers_count || 0)}</span>`;
+        repoMetaLine.appendChild(starsItem);
         
         // Forks
         const forksItem = document.createElement('div');
         forksItem.className = 'repo-meta-item';
-        forksItem.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
-            </svg>
-            <span>${formatNumber(repo.forks_count || 0)}</span>
-        `;
-        repoMeta.appendChild(forksItem);
+        forksItem.innerHTML = `<span>⑂</span><span>${formatNumber(repo.forks_count || 0)}</span>`;
+        repoMetaLine.appendChild(forksItem);
         
-        repoCard.appendChild(repoHeader);
-        repoCard.appendChild(repoDescription);
-        repoCard.appendChild(repoMeta);
+        repoMain.appendChild(repoTop);
+        repoMain.appendChild(repoMetaLine);
         
-        reposList.appendChild(repoCard);
+        if (repo.description) {
+            const repoDescription = document.createElement('p');
+            repoDescription.className = 'repo-description';
+            repoDescription.textContent = repo.description;
+            repoMain.appendChild(repoDescription);
+        }
+        
+        repoItem.appendChild(repoNumber);
+        repoItem.appendChild(repoMain);
+        
+        reposList.appendChild(repoItem);
     });
     
-    reposSection.classList.add('active');
+    if (reposStage) {
+        reposStage.classList.add('active');
+    }
     
     if (!prefersReducedMotion && typeof gsap !== 'undefined') {
-        gsap.set(reposSection, { opacity: 0, y: 20 });
-        gsap.to(reposSection, {
+        gsap.set(reposStage, { opacity: 0, y: 30 });
+        gsap.to(reposStage, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+        });
+        
+        const repoItems = reposList.querySelectorAll('.repo-item');
+        gsap.set(repoItems, { opacity: 0, y: 20 });
+        gsap.to(repoItems, {
             opacity: 1,
             y: 0,
             duration: 0.6,
-            ease: 'power2.out'
+            ease: 'power2.out',
+            stagger: 0.08,
+            delay: 0.2
         });
-        animateRepos();
     }
 }
 
