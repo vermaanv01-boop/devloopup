@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevLookup - GitHub Profile Finder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">DevLookup</h1>
+            <p class="tagline">Find GitHub profiles and explore repositories</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="search-section" aria-label="Search GitHub profile">
+                <form id="searchForm" class="search-form" novalidate>
+                    <label for="usernameInput" class="sr-only">GitHub username</label>
+                    <input 
+                        type="text" 
+                        id="usernameInput" 
+                        class="search-input" 
+                        placeholder="Enter GitHub username (e.g., octocat)" 
+                        autocomplete="off"
+                        aria-label="GitHub username"
+                    >
+                    <button type="submit" class="search-button" aria-label="Search profile">Search</button>
+                </form>
+            </section>
+
+            <section class="status-section" aria-live="polite" aria-atomic="true">
+                <div id="loadingIndicator" class="status-message loading" role="status" aria-hidden="true">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span>Loading profile...</span>
+                </div>
+                <div id="notFoundMessage" class="status-message error" role="alert" aria-hidden="true">
+                    <span>User not found. Please check the username and try again.</span>
+                </div>
+                <div id="errorMessage" class="status-message error" role="alert" aria-hidden="true">
+                    <span>Something went wrong while fetching data. Please try again later.</span>
+                </div>
+            </section>
+
+            <section id="profileSection" class="profile-section" aria-label="Profile information" aria-live="polite">
+                <article class="profile-card">
+                    <div class="profile-header">
+                        <img id="avatar" src="" alt="User avatar" class="avatar">
+                        <div class="profile-basic">
+                            <h2 id="name" class="profile-name"></h2>
+                            <a id="username" href="#" target="_blank" rel="noopener noreferrer" class="profile-username"></a>
+                            <p id="bio" class="profile-bio"></p>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <div class="detail-item" id="locationItem">
+                            <span class="detail-label">Location</span>
+                            <span id="location" class="detail-value"></span>
+                        </div>
+                        <div class="detail-item" id="companyItem">
+                            <span class="detail-label">Company</span>
+                            <span id="company" class="detail-value"></span>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span id="followers" class="stat-value">0</span>
+                            <span class="stat-label">Followers</span>
+                        </div>
+                        <div class="stat-item">
+                            <span id="following" class="stat-value">0</span>
+                            <span class="stat-label">Following</span>
+                        </div>
+                        <div class="stat-item">
+                            <span id="publicRepos" class="stat-value">0</span>
+                            <span class="stat-label">Public Repos</span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section id="reposSection" class="repos-section" aria-label="Recent repositories" aria-live="polite">
+                <h2 class="section-title">Recent Repositories</h2>
+                <div id="reposList" class="repos-list" role="list"></div>
+                <p id="noReposMessage" class="no-repos" aria-live="polite">No public repositories found.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Built with vanilla HTML, CSS & JavaScript • Powered by GitHub REST API</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
