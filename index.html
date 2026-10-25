@@ -3,107 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevLookup - GitHub Profile Finder</title>
+    <title>DevLookup — GitHub Profile Finder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <h1 class="logo">DevLookup</h1>
-                <p class="tagline">Find GitHub profiles and explore repositories</p>
+    <header class="site-header">
+        <div class="grid-wrapper">
+            <div class="header-bar">
+                <div class="header-meta">
+                    <span class="header-label">DevLookup</span>
+                    <span class="header-divider"></span>
+                    <span class="header-sub">GitHub Archive</span>
+                </div>
+                <div class="header-index">01</div>
             </div>
         </div>
     </header>
 
-    <main class="main">
-        <div class="container">
-            <section class="search-section" aria-label="Search GitHub profile">
-                <form id="searchForm" class="search-form" novalidate>
-                    <label for="usernameInput" class="sr-only">GitHub username</label>
-                    <input 
-                        type="text" 
-                        id="usernameInput" 
-                        class="search-input" 
-                        placeholder="Enter GitHub username (e.g., octocat)" 
-                        autocomplete="off"
-                        aria-label="GitHub username"
-                    >
-                    <button type="submit" class="search-button" aria-label="Search profile">Search</button>
-                </form>
-            </section>
-
-            <section class="status-section" aria-live="polite" aria-atomic="true">
-                <div id="loadingIndicator" class="status-message loading" role="status" aria-hidden="true">
-                    <span class="spinner" aria-hidden="true"></span>
-                    <span>Loading profile...</span>
-                </div>
-                <div id="notFoundMessage" class="status-message error" role="alert" aria-hidden="true">
-                    <span>User not found. Please check the username and try again.</span>
-                </div>
-                <div id="errorMessage" class="status-message error" role="alert" aria-hidden="true">
-                    <span>Something went wrong while fetching data. Please try again later.</span>
-                </div>
-            </section>
-
-            <section id="profileSection" class="profile-section" aria-label="Profile information" aria-live="polite">
-                <article class="profile-card">
-                    <div class="profile-layout">
-                        <div class="profile-aside">
-                            <img id="avatar" src="" alt="User avatar" class="avatar">
+    <main class="site-main">
+        <section class="hero" aria-label="Introduction">
+            <div class="grid-wrapper">
+                <div class="hero-grid">
+                    <div class="hero-left">
+                        <div class="hero-line">
+                            <span class="hero-line-inner">GITHUB</span>
                         </div>
-                        <div class="profile-main">
-                            <header class="profile-main-header">
-                                <h2 id="name" class="profile-name"></h2>
-                                <a id="username" href="#" target="_blank" rel="noopener noreferrer" class="profile-username"></a>
-                            </header>
-                            <p id="bio" class="profile-bio"></p>
-                            <div class="profile-meta">
-                                <div class="meta-row" id="locationItem">
-                                    <span class="meta-label">Location</span>
-                                    <span id="location" class="meta-value"></span>
-                                </div>
-                                <div class="meta-row" id="companyItem">
-                                    <span class="meta-label">Company</span>
-                                    <span id="company" class="meta-value"></span>
-                                </div>
-                            </div>
-                            <div class="profile-stats">
-                                <div class="stat-item">
-                                    <span id="followers" class="stat-value">0</span>
-                                    <span class="stat-label">Followers</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span id="following" class="stat-value">0</span>
-                                    <span class="stat-label">Following</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span id="publicRepos" class="stat-value">0</span>
-                                    <span class="stat-label">Public Repos</span>
-                                </div>
-                            </div>
+                        <div class="hero-line">
+                            <span class="hero-line-inner">PROFILE</span>
+                        </div>
+                        <div class="hero-line hero-line-accent">
+                            <span class="hero-line-inner">FINDER</span>
                         </div>
                     </div>
-                </article>
-            </section>
+                    <div class="hero-right">
+                        <div class="hero-rule"></div>
+                        <p class="hero-description">An experimental editorial exploration of developer presence. Search public profiles and trace repositories through a structured archive.</p>
+                        <div class="hero-rule"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <section id="reposSection" class="repos-section" aria-label="Recent repositories" aria-live="polite">
-                <header class="repos-header">
-                    <h2 class="section-title">Recent Repositories</h2>
-                </header>
-                <div id="reposList" class="repos-list" role="list"></div>
-                <p id="noReposMessage" class="no-repos" aria-live="polite">No public repositories found.</p>
-            </section>
-        </div>
+        <section class="search-stage" aria-label="Search GitHub profile">
+            <div class="grid-wrapper">
+                <div class="search-grid">
+                    <div class="search-meta">
+                        <span class="section-number">02</span>
+                        <span class="section-label">Search</span>
+                        <div class="meta-rule"></div>
+                    </div>
+                    <div class="search-content">
+                        <form id="searchForm" class="search-form" novalidate>
+                            <label for="usernameInput" class="sr-only">GitHub username</label>
+                            <input 
+                                type="text" 
+                                id="usernameInput" 
+                                class="search-input" 
+                                placeholder="ENTER GITHUB USERNAME" 
+                                autocomplete="off"
+                                aria-label="GitHub username"
+                            >
+                            <button type="submit" class="search-button" aria-label="Search profile">SEARCH</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="status-stage" aria-live="polite" aria-atomic="true">
+            <div class="grid-wrapper">
+                <div class="status-grid">
+                    <div class="status-meta">
+                        <span class="section-number">03</span>
+                        <span class="section-label">Status</span>
+                        <div class="meta-rule"></div>
+                    </div>
+                    <div class="status-content">
+                        <div id="loadingIndicator" class="status-message loading" role="status" aria-hidden="true">
+                            <span class="status-indicator"></span>
+                            <span>LOADING PROFILE</span>
+                        </div>
+                        <div id="notFoundMessage" class="status-message error" role="alert" aria-hidden="true">
+                            <span class="status-indicator"></span>
+                            <span>USER NOT FOUND — CHECK USERNAME</span>
+                        </div>
+                        <div id="errorMessage" class="status-message error" role="alert" aria-hidden="true">
+                            <span class="status-indicator"></span>
+                            <span>SYSTEM ERROR — TRY AGAIN LATER</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="profileStage" class="profile-stage" aria-label="Profile information" aria-live="polite">
+            <div class="grid-wrapper">
+                <div class="profile-grid">
+                    <div class="profile-meta">
+                        <span class="section-number">04</span>
+                        <span class="section-label">Profile</span>
+                        <div class="meta-rule"></div>
+                    </div>
+                    <div class="profile-content">
+                        <article class="profile-archive">
+                            <div class="profile-header-row">
+                                <div class="profile-avatar-wrap">
+                                    <img id="avatar" src="" alt="User avatar" class="profile-avatar">
+                                </div>
+                                <div class="profile-identity">
+                                    <h2 id="name" class="profile-title"></h2>
+                                    <a id="username" href="#" target="_blank" rel="noopener noreferrer" class="profile-link"></a>
+                                </div>
+                            </div>
+                            <div class="profile-rule"></div>
+                            <p id="bio" class="profile-bio"></p>
+                            <div class="profile-rule"></div>
+                            <div class="profile-metadata">
+                                <div class="metadata-row" id="locationItem">
+                                    <span class="metadata-label">LOCATION</span>
+                                    <span id="location" class="metadata-value"></span>
+                                </div>
+                                <div class="metadata-row" id="companyItem">
+                                    <span class="metadata-label">ORGANIZATION</span>
+                                    <span id="company" class="metadata-value"></span>
+                                </div>
+                            </div>
+                            <div class="profile-rule"></div>
+                            <div class="profile-stats-row">
+                                <div class="stat-block">
+                                    <span id="followers" class="stat-number">0</span>
+                                    <span class="stat-text">FOLLOWERS</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-block">
+                                    <span id="following" class="stat-number">0</span>
+                                    <span class="stat-text">FOLLOWING</span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-block">
+                                    <span id="publicRepos" class="stat-number">0</span>
+                                    <span class="stat-text">PUBLIC REPOS</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reposStage" class="repos-stage" aria-label="Recent repositories" aria-live="polite">
+            <div class="grid-wrapper">
+                <div class="repos-grid">
+                    <div class="repos-meta">
+                        <span class="section-number">05</span>
+                        <span class="section-label">Repositories</span>
+                        <div class="meta-rule"></div>
+                    </div>
+                    <div class="repos-content">
+                        <div class="repos-header-row">
+                            <h2 class="repos-title">RECENT</h2>
+                            <span class="repos-count">/ 10</span>
+                        </div>
+                        <div class="repos-rule"></div>
+                        <div id="reposList" class="repos-list" role="list"></div>
+                        <div id="noReposMessage" class="no-repos" aria-live="polite">
+                            <span class="no-repos-text">NO PUBLIC REPOSITORIES FOUND</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-inner">
-                <p class="footer-text">Built with vanilla HTML, CSS & JavaScript • Powered by GitHub REST API</p>
+    <footer class="site-footer">
+        <div class="grid-wrapper">
+            <div class="footer-grid">
+                <div class="footer-meta">
+                    <span class="footer-label">DevLookup</span>
+                    <span class="footer-divider"></span>
+                    <span class="footer-sub">Experimental Archive</span>
+                </div>
+                <div class="footer-info">
+                    <span class="footer-note">VANILLA HTML · CSS · JS · GSAP · GITHUB API</span>
+                </div>
             </div>
         </div>
     </footer>
