@@ -390,6 +390,8 @@ searchForm.addEventListener('submit', async (e) => {
         // If empty, just clear previous results
         hideAllStatus();
         hideProfileAndRepos();
+        reposList.innerHTML = '';
+        noReposMessage.classList.remove('active');
         return;
     }
     
@@ -398,6 +400,7 @@ searchForm.addEventListener('submit', async (e) => {
     hideProfileAndRepos();
     reposList.innerHTML = '';
     noReposMessage.classList.remove('active');
+    noReposMessage.textContent = 'No public repositories found.';
     
     showLoading();
     
@@ -430,6 +433,15 @@ searchForm.addEventListener('submit', async (e) => {
             reposSection.classList.add('active');
             noReposMessage.textContent = 'Unable to load repositories.';
             noReposMessage.classList.add('active');
+            if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+                gsap.set(reposSection, { opacity: 0, y: 20 });
+                gsap.to(reposSection, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'power2.out'
+                });
+            }
         }
     } catch (error) {
         hideAllStatus();
