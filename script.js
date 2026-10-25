@@ -147,19 +147,19 @@ function displayProfile(userData) {
     // Location
     if (userData.location) {
         locationEl.textContent = userData.location;
-        locationItem.style.display = 'flex';
+        if (locationItem) locationItem.style.display = 'flex';
     } else {
         locationEl.textContent = '';
-        locationItem.style.display = 'none';
+        if (locationItem) locationItem.style.display = 'none';
     }
     
     // Company
     if (userData.company) {
         companyEl.textContent = userData.company;
-        companyItem.style.display = 'flex';
+        if (companyItem) companyItem.style.display = 'flex';
     } else {
         companyEl.textContent = '';
-        companyItem.style.display = 'none';
+        if (companyItem) companyItem.style.display = 'none';
     }
     
     // Stats
