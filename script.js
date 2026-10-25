@@ -395,7 +395,9 @@ searchForm.addEventListener('submit', async (e) => {
         hideAllStatus();
         hideProfileAndRepos();
         reposList.innerHTML = '';
-        noReposMessage.classList.remove('active');
+        if (noReposMessage) {
+            noReposMessage.classList.remove('active');
+        }
         return;
     }
     
@@ -403,8 +405,10 @@ searchForm.addEventListener('submit', async (e) => {
     hideAllStatus();
     hideProfileAndRepos();
     reposList.innerHTML = '';
-    noReposMessage.classList.remove('active');
-    noReposMessage.textContent = 'No public repositories found.';
+    if (noReposMessage) {
+        noReposMessage.classList.remove('active');
+        noReposMessage.querySelector('.no-repos-text').textContent = 'NO PUBLIC REPOSITORIES FOUND';
+    }
     
     showLoading();
     
@@ -433,17 +437,23 @@ searchForm.addEventListener('submit', async (e) => {
         if (reposResult.status === 'fulfilled') {
             displayRepos(reposResult.value);
         } else {
-            // If repos failed but profile loaded, just don't show repos or show empty
-            reposSection.classList.add('active');
-            noReposMessage.textContent = 'Unable to load repositories.';
-            noReposMessage.classList.add('active');
-            if (!prefersReducedMotion && typeof gsap !== 'undefined') {
-                gsap.set(reposSection, { opacity: 0, y: 20 });
-                gsap.to(reposSection, {
+            if (reposStage) {
+                reposStage.classList.add('active');
+            }
+            if (noReposMessage) {
+                const noReposText = noReposMessage.querySelector('.no-repos-text');
+                if (noReposText) {
+                    noReposText.textContent = 'UNABLE TO LOAD REPOSITORIES';
+                }
+                noReposMessage.classList.add('active');
+            }
+            if (!prefersReducedMotion && typeof gsap !== 'undefined' && reposStage) {
+                gsap.set(reposStage, { opacity: 0, y: 30 });
+                gsap.to(reposStage, {
                     opacity: 1,
                     y: 0,
-                    duration: 0.6,
-                    ease: 'power2.out'
+                    duration: 0.8,
+                    ease: 'power3.out'
                 });
             }
         }
@@ -460,35 +470,35 @@ function initHeroAnimations() {
         return;
     }
     
-    const headerInner = document.querySelector('.header-inner');
-    const searchSection = document.querySelector('.search-section');
+    const heroLines = document.querySelectorAll('.hero-line-inner');
+    gsap.set(heroLines, { y: '120%' });
+    gsap.to(heroLines, {
+        y: '0%',
+        duration: 1.2,
+        ease: 'power3.out',
+        stagger: 0.15,
+        delay: 0.3
+    });
     
-    if (headerInner) {
-        gsap.set(headerInner.querySelector('.logo'), { opacity: 0, y: 20 });
-        gsap.set(headerInner.querySelector('.tagline'), { opacity: 0, y: 16 });
-        gsap.to(headerInner.querySelector('.logo'), {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'power2.out'
-        });
-        gsap.to(headerInner.querySelector('.tagline'), {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'power2.out',
-            delay: 0.12
-        });
-    }
+    const heroRules = document.querySelectorAll('.hero-rule');
+    gsap.set(heroRules, { scaleX: 0, transformOrigin: 'left center' });
+    gsap.to(heroRules, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        stagger: 0.2,
+        delay: 0.9
+    });
     
-    if (searchSection) {
-        gsap.set(searchSection, { opacity: 0, y: 20 });
-        gsap.to(searchSection, {
+    const heroDesc = document.querySelector('.hero-description');
+    if (heroDesc) {
+        gsap.set(heroDesc, { opacity: 0, y: 20 });
+        gsap.to(heroDesc, {
             opacity: 1,
             y: 0,
-            duration: 0.7,
+            duration: 0.8,
             ease: 'power2.out',
-            delay: 0.24
+            delay: 1.0
         });
     }
 }
@@ -503,14 +513,14 @@ function initHoverAnimations() {
     if (searchButton) {
         searchButton.addEventListener('mouseenter', () => {
             gsap.to(searchButton, {
-                scale: 1.02,
+                x: 4,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         });
         searchButton.addEventListener('mouseleave', () => {
             gsap.to(searchButton, {
-                scale: 1,
+                x: 0,
                 duration: 0.2,
                 ease: 'power2.out'
             });
@@ -523,7 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hideAllStatus();
     hideProfileAndRepos();
     reposList.innerHTML = '';
-    noReposMessage.classList.remove('active');
+    if (noReposMessage) {
+        noReposMessage.classList.remove('active');
+    }
     
     initHeroAnimations();
     initHoverAnimations();
